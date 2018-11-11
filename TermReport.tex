@@ -1,0 +1,230 @@
+\documentclass[english,12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{csquotes}
+%\documentclass[ngerman,11pt]{report}
+\usepackage[a4paper, total={6in, 9in}]{geometry}
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\begin{document}
+
+
+\bibliography{literatur}  % requires literatur.bib 
+
+\author{Lukas Möller}
+\title{Gödel's incompleteness theorems and it's consequences}
+\date{November 2018}
+
+%%%----------------------------------------------------------
+
+%%%----------------------------------------------------------
+\maketitle
+\tableofcontents
+\newpage
+%%%----------------------------------------------------------
+
+\section{Introduction}
+As I always was and still am very interested in mathematics and proofs I always thought that some day all true things could be proven and we were basically done with proofs and would never have to prove anything again. Of course I didn't thought that all of these proofs would be done by humans, but - being also interested in Computer Science - by computers which would "simply" try out all possible combinations and - using these combinations to proof every proposition that you would give the computer. This relies on the fact that there are only a few certain operations that can be used in proofs. Obviously these can be used in very complicated ways. Especially when using geometrical figures to proof something these proofs can get complicated very quickly.
+
+But when I first discovered Gödel's incompletness theorems my mind was changed. He - at the age of 25 - proved that not all true propositions could be proofed. Not only would his theorem be true in very complicated axiomatic systems, but also in our simple algebraic system which only defines a few certain elementary operators.
+
+His theorems are special also in the way that they have a real impact on almost everything also besides just a specific topic. Mathematicians who worked almost their whole life on proving a single assumption could have wasted their whole lifetime because the proposition they tried to prove was true but could not be proven positive or negative at all.
+\section{Example}
+Self-referencial statements which cannot be proven true or false can simply be constructed and existed already in th period of classical antiquity.\\
+An example of such a self referential theorem would be:
+\begin{displayquote}
+    The set $S$ contains only every set that does not contain itself.
+\end{displayquote}
+Now the question would be:
+\begin{displayquote}
+    Does the set $S$ contain itself?
+\end{displayquote}
+If it would contain itself it would not only contain the sets that contain themselves. But if it doesn't contain itself it would not contain every set that doesn't contain itself. The following equation can therefore not be proven true or false:
+$$
+    S \in S
+$$
+\section{Axioms}
+To understand a proof and it's consequences it is necessary to understand the underlying principles first. Therefore this chapter explains what Axioms actually are and which Axiomatic systems are powerful enough to underlie the principles of the incompleteness theorems. 
+\subsection{Definition}
+Axioms are fundamental principles that don't have to be proven by anyone and form the basis for every proof in that system. They are always fundamental and self-evident. Generally it should be possible to derive the entire content of the system just by deducting from the axioms. The size of the axiomatic system should be as small as possible. 
+\subsection{Popularly used axiomatic systems}
+\subsubsection{Peano axioms}
+Peano defined an axiomatic system for calculations with natural numbers. He stated that the following axioms are enough to derive the entire mathematics of natural numbers using it. \\
+The relation "$'$" does map a natural number $n$ to its sucessor $n'$.
+\begin{enumerate}
+    \item $0 \in \mathbb{N}$
+    \item $\forall n (n \in \mathbb{N} \implies n' \in \mathbb{N})$
+    \item $\forall n (n \in \mathbb{N} \implies n' \neq 0)$
+    \item $\forall n, m (n, m \in \mathbb{N} \implies (n' = m' \implies n = m))$
+    \item $\displaystyle \forall X(0\in X\land \forall n(n\in \mathbb{N} \implies (n\in X\implies n'\in X))\implies \mathbb{N} \subseteq X) $
+\end{enumerate}
+The axioms can be verbalized. The first axiom describes the fact that the first natural number is zero. Zero is just a placeholder for any other starting point. It is not a presumption that the numbers are given in any number system. The second axiom then defines the successor relation: Every natural number has a successor that is also part of the set of natural numbers. The third axiom then then states that the zero is not the successor of any natural number. It is therefore defined that the zero is the smallest natural number.
+
+The forth axiom is defining the equality relation. Every pair of natural number ($n, m \in \mathbb{N}$) is only equal if the successors $n', m' \in \mathbb{N}$ are also equal. This relation is recursive: imperatively it defines that numbers are only equal if you need the same amount of steps to the smallest element of any set $X \subseteq \mathbb{N}$. In case of the set of natural numbers $X = \mathbb{N}$ this smallest element is always the zero.
+
+The last axiom defines the basis of the deductive method of complete induction. It defines that every nonempty subset of natural numbers ($\mathbb{N} \subseteq X$) always has a smallest natural number. It does this by defining a mapping from $X$ to $\mathbb{N}$. The complete induction needs this for defining the base case.
+\paragraph{Usage and derivation of basic operations on natural numbers}
+\paragraph{The definition of addition}
+Peano is defining the addition relation recursively:
+$$
+    n + 0 := n
+$$
+$$
+    n + m' := (n + m)' 
+$$
+Because this recursive definition needs a base case he is also defining the successor of zero as one:
+$$
+    0' := 1
+$$
+From this it can be deduced that:
+$$
+    n + 1 = n'
+$$
+\paragraph{The definition of multiplication}
+He is then able to describe the relation of multiplication using the definition of addition given aboe. He does this in a similiar way. The multiplication with zero as a factor is defined as the base case:
+$$
+    n \times 0 = 0
+$$
+All of the other cases are then defined using the succesor relation ad using a stepwise addition. The definition is therefore recursive as well:
+$$
+    n \times m' = (n \times m) + n
+$$
+example of using the definition to derive the multiplication of two natural numbers:\\
+$$
+\begin{aligned}
+    6 \times 7 &= 6 \times (6)'\\
+    & = (6 \times 6) + 6\\
+    & = (6 \times 5) + 6 + 6\\
+    & = (6 \times 4) + 6 + 6 + 6\\
+    & = (6 \times 3) + 6 + 6 + 6 + 6\\
+    & = (6 \times 2) + 6 + 6 + 6 + 6 + 6\\
+    & = (6 \times 1) + 6 + 6 + 6 + 6 + 6 + 6\\
+    & = (6 \times 0) + 6 + 6 + 6 + 6 + 6 + 6 + 6\\
+    & = 0 + 6 + 6 + 6 + 6 + 6 + 6 + 6\\
+    & = 42
+\end{aligned}
+$$
+\section{Gödels first incompletness theorem}
+\subsection{Formal System}
+A formal system $L$ can be expressed as:
+\begin{itemize}
+\item A finite set of symbols from which sentences or formulae can be constructed
+\item A set of well formed formulae, each one being a sentence formed from the set of symbols defined before
+\item A finite set of axioms, each one being a well formed formula
+\item A set of inference rules
+\end{itemize}
+In the general case when working with equations the finite set of symbols contains operators and operands from which equations and terms can be constructed. The set of well formed formulae is the set of true equations that can be constructed. The set of axioms could in this case be the Peano axioms, each one by itself being a well defined formulae. The set of inference rule would then consist out of every legal operation that can be used to modify a true equation and it being always true after the transformation.
+
+\subsection{The Robinson arithmetic}
+The Robinson arithmetic is an interpretation of the Peano axioms which is written in first-order predicate logic. It defines the natural numbers similarly to the axioms given in the related chapter. The Robinson arithmetic should be given as following:
+\begin{align}
+    Sx &\neq \mathbf {0}\\
+    (Sx = Sy) &\implies (x = y)\\
+    \displaystyle y=\mathbf {0} \vee & \exists x(Sx=y)
+\end{align}\footnote{See \cite{CMyFiles21:online}. Selected axioms shown, the comparison relations are not defined in this subset.}
+(The last axiom of Peano is not given here because it is not needed in this case.)
+The definition of addition and multiplication can than be defined as:
+\begin{align}
+    x + \mathbf {0} &= y \\
+    x + Sy &= S(x+y) \\
+    x \times \mathbf {0} &= \mathbf {0} \\
+    x \times Sy &= (x \times y) + x
+\end{align}
+
+\subsection{The first incompletness theorem}
+The first incompleteness theorem can be formulated as following:\\
+\begin{displayquote}
+    Let $T$ be a recursively enumerable and consistent formal system, in which the Robinson arithmetic system\footnote{As given above} can be interpreted. Then $T$ is incomplete.
+\end{displayquote}
+Incompleteness should mean in this context that there are no premises which are neither provable nor deniable.\\
+For every premise $\alpha$ in a complete system exactly one of the following is true:\footnote{$a \vDash b$ can be read as: a prooves b}
+$$
+    {\displaystyle T\vDash \alpha }
+$$
+or
+$$
+    {\displaystyle T\vDash \neg \alpha }
+$$
+His theorems now predicates that every system that is powerful enough is not complete. Therefore there are premises $\alpha$ which are neither provable positive or negative
+\subsection{Sketch of a Proof of Gödels First Incompletness Theorem}
+The proof given by Gödel is relying heavliy on a so called Gödels numbering. Such a numbering encodes every premise to a natural number. As this can be done using any encoding as long as the encoding is reversible only one specific simple numbering should be presented in the following chapter:
+\subsubsection{Numbering based on two digit decimal numbers}
+Every symbol in a premise should have an encoding as follows:
+\begin{align*}
+    11 & - \mathbf{\dot 0}\\
+    12 & - \dot S\\
+    13 & - \dot =\\
+    14 & - \dot +\\
+    15 & - \dot \times\\
+    16 & - \text{(}\\
+    17 & - \text{)}\\
+    18 & - x\\
+    19 & - '\\
+    21 & - \exists\\
+    22 & - \forall\\
+    23 & - \land\\
+    24 & - \lor\\
+    25 & - \neg\\
+\end{align*}
+Equations can consequently be formulated using a single number by concatenating the numbers of the used symbols ($E_x$ is the encoding of $x$):\footnote{Gödel originally used a method based on prime factoring, encoding the $n$-th symbol with an encoding of $a$ as the $n$-th prime number raised by $a$. However the encoding used is irrelevant for the proof. It only has to be shown in some way that there is a mapping function $f$ that maps all mathematical statements to $\mathcal{N}$. Furthermore it is not necessary to map to $\mathcal{N}$ because it is irrelevant which base symbol is being used in the proof.}
+$$
+    E_{x_0, x_1, x_2, \dots x_n} = E_{x_0} \times 10^{(2n)} + E_{x_1} \times 10^{2(n - 1)} + E_{x_2} \times 10^{2(n - 2)} + E_{x_n}
+$$
+As an example the formula $1 = 0$ should be encoded:\\
+1 is encoded as 12 11 because $1$ is the successor of $0$
+$$
+    E_{1 = 0} = 12111311
+$$
+\begin{itemize}
+    \item 12 11 - is the encoding for the number 1
+    \begin{itemize}
+        \item 12 - does represent the successor relation
+        \item 11 - does represent the number 0
+    \end{itemize}
+    \item 13 - does represent the equality relation symbol
+    \item 11 - is the encoding of the number 0
+\end{itemize}
+\subsection{The provability relation}
+The provability of an equation can now be described as a relation as well. Deduction rules can be described as a relation on a list of Gödel numbers. So a deduction rule $D$  could allow one to move from $S_1$, $S_2$ to $S$. Each of these deduction rules is concrete. It is therefore possible to decide for each Gödel number if they are part of that relation.
+
+The next step of the proof is to show that the numbers can be used to describe the provability relation. A proof of a formula or equation $S$ can always be described as a series of formulas of which each one is either an axiom or was deduced from a deduction rule from the previous fomula. A proof can therefore be encoded using the Gödel numbering as well. Consequently there is a Gödel number with a proof for every provable premise. This arithmetic relation of provability is now a binary relation like any other (for example the + relation ($x + y$)) $proof(n, m)$. Let $n$ and $m$ $n, m \in \mathbf{N}$. Every pair of $n$
+, $m$ are now part either of the relation $provable(x, y)$ or of $\neg proof(x, y)$, but they can't be both provable not not provable. This can only be said because we said that the system was decidable and recursive (which is the same thing). The relation $provable$ can now be defined as following:
+$$
+    provable(x) = \exists x (proof(x, y))
+$$
+The formula $x$ is only provable if there is a number x that is a proof of y.
+\subsubsection{Diagonalization}
+The subsequent step in the proof is to construct a premise that claims that it cannot be solved. This can be done using the diagonal lemma\footnote{Explanation or reference}.\\
+The diagonal lemma allows to assume that there is a sentence $\psi$ such that $\psi$ $\leftrightarrow$ $F(G(x))$ is provable in T.\footnote{$G$ being the mapping from statements to Gödel numbers}\\
+Intuitevely this can be broken down verbally to: "There exists a sentence $\psi$ that has the property F". If we now replace $F$ with the negation of the provability relation the diagonal lemma allows us to assume that there is a sentence that has the same meaning as "The Gödel number of this statement is the Gödel number of an unprovable formula". It however doesn't directly state that it cannot be proven, but that a specific derivation leads to a Gödel number which cannot be proven. Let us now reference that statement as $\psi$. $\psi$ is not self-referencing, but it still claims to be unprovable.
+\subsubsection{The result}
+That premise could then be added to the set of axioms. But this would in turn result in a new system in which such a premise could again be created. This results in the proof that every system powerful enough to describe this property has premises which cannot be proven. These premises however can be true or false, but as their nature is this cannot be proven. A system that meets the given criteria is therefore always incomplete.
+
+\section{Consequences}
+\subsection{Approaches to provability before the publication of Gödels incompletness theorems}
+Before the publication of Gödels incompletness theorems it was common belief that all propositions would be either true and provable true, or false and provable false. If a proposition could not be proven it had to be added to the finite set of axioms if it is true. If not it could be negated and then added to the finite set of axioms. This would then allow to use these new axioms for new proofs\\
+\paragraph{Hilbert's program}
+The German mathematician avid Hilbert proposed that a solution to inconsistencies in mathematics would be a solid foundation and a formal deduction. His idea was to reduce every mathematical system to a common, very simple mathematical system from which everything could be deduced using precise formal language, and that mathematical statements should only be manipulated using a set of well defined rules.
+\section{Implications}
+\subsection{Implications on mathematics}
+Although it was obvious before that a certain amount of axioms is needed for a formal system to be completed this proof shows that a system complex and powerful enough is never complete. This in turn results in the question why certain axioms are really needed. Although the axiom of parallels in the axioms of euclidean geometry is of importance it doesn't change the nature of the system - it doesn't make the system any more complete. This would result in the need for no axioms at all because they are all equally important and there would be the need of an infinite set of axioms a human would never be able to describe.\\
+There are obviously axiomatic systems which are complete and on which the theorem of Gödel cannot be applied on, but these systems are not powerful enough to describe the theory of natural numbers.
+
+In reality however the axioms that are the exception used in Gödels proof are more or less irrelevant in the real world scenarios.\\
+There are however multiple occasions were it was shown that a theorem could not be proven in a system that was meant to describe the system.\\
+\paragraph{Ramsey's theorem}
+Ramsey's theorem claims that if an infinite set $A$ is divided into a finite amount of subsets, that at least one of these subsets has to infinite as well.\\
+Ramsey's theorem in set theory \footnote{There is actually more than one theorem named Ramsey's theorem} cannot be proven in  the system of Peano axioms. It is however true, and its truthiness can be shown in the axiomatic system of the Zermelo-Fraenkel-set theory.\\
+\paragraph{Theorem of Goodstein}
+The theorem of Goodstein is another example of a theorem that cannot be proven in the axiomatic system of the Paeno axioms. Its unprovability was shown in 1982 by Jeff Paris and Laurie Kirby.
+\section{Conclusion}
+As it is shown in this essay, most mathematical systems are proven to be incomplete or contradicting\footnote{Or not powerfull enough to be used to interpret the Peano arithmetic}. This shows that even mathematics are incomplete and are not only based on rational thinking. Although the systems of mathematics are made to be perfect systems and are purely made by mankind they still have contradictions which shows that the system is not perfect.\\
+For me personally the careful examination of Gödels first incompleteness theorem showed me the beauty of the proof done by Gödel. Its study gave me an interesting insight into mathematics outside of school mathematics as such topics are not part of the curriculum.
+\nocite{*}
+\medskip
+ 
+\bibliographystyle{unsrt}
+\bibliography{sample}
+
+
+\end{document}
